@@ -1,4 +1,4 @@
-# zieph
+# zipf
 
 
 *Under construction, current project*
