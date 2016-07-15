@@ -57,27 +57,17 @@ public class WordCounterController implements ActionListener {
 		table.remove(",");
 		
 		double uniquePercen = (double)individualCount / (double)count;
-		//gui.input.setText("Total words: "+count+" Total Unique words: "+individualCount+ " Unique word percentage: %"+ uniquePercen*100 +" All the Unsorted words "+table);
 		ValueComparator bvc = new ValueComparator(table);
 		TreeMap<String, Integer> sortedMap = new TreeMap<String, Integer>(bvc);
 		sortedMap.putAll(table);
-//		
-//		gui.output.setText("The sorted words: " + sortedMap);
+
 		
 		
 		String a = ("Total words: "+count+" \n Total Unique words: "+individualCount+ " \n Unique word percentage: %"+ uniquePercen *100+ " \n All the sorted words: \n"+sortedMap);
 		gui.output.setText(a);
 		gui.output.setCaretPosition(0);
 		
-		//		double ziephIdeal[] = new double [count];
-//		double ziephLiteral[] = new double [count];
-//		for (int i = 0; i <= count; i++){
-//			ziephIdeal[i] = (double) 1 / (double) i;
-//			//ziephLiteral[i] = (double) sortedMap.values().toArray()[0] / (double) sortedMap.values().toArray()[i]; 
-//		}
-//		System.out.println("Zieph Ideal: "+ ziephIdeal);
-//		System.out.println("Zieph Lieteral: "+ ziephLiteral);
-		
+
 		
 		
 		
@@ -94,8 +84,6 @@ public class WordCounterController implements ActionListener {
 	     * compares the values of of the Associative array
 	     * to sort them.
 	     * 
-	     * (non-Javadoc)
-	     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	     */
 	    public int compare(String a, String b) {
 	        if (base.get(a) >= base.get(b)) {
