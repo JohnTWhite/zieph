@@ -11,12 +11,17 @@ public class WordCounterView extends JFrame {
 	WordCounterController controller = new WordCounterController(this);
 	
 	JPanel panel = new JPanel();
+	
 	JLabel overView = new JLabel("Type your words to have them counted");
+	
 	JTextArea input = new JTextArea();
 	JTextArea output = new JTextArea();
-//	JScrollBar scroll = new JScrollBar(JScrollBar.VERTICAL);
+	
+	JScrollPane scrollOut;
+	JScrollPane scrollIn;
 	
 	JButton submit = new JButton("Submit");
+	JButton clear = new JButton("Clear");
 	
 	
 	public WordCounterView(){
@@ -27,24 +32,24 @@ public class WordCounterView extends JFrame {
 		GridLayout layout = new GridLayout(5,1,10,10);
 		
 		submit.addActionListener(controller);
-		
-//		BoundedRangeModel scrollView = output.getVerticalVisibility();
+		clear.addActionListener(controller);
 		
 		output.setEditable(false);
 		output.setLineWrap(true);
 		
+		scrollOut = new JScrollPane(output);
+		scrollIn = new JScrollPane(input);
+		
 		input.setEditable(true);
 		input.setLineWrap(true);
 		
-		
-		
 		panel.setLayout(layout);
 	
-		
 		panel.add(overView);
-		panel.add(input);
+		panel.add(scrollIn);
 		panel.add(submit);
-		panel.add(output);
+		panel.add(scrollOut);
+		panel.add(clear);
 	
 		add(panel);
 		setVisible(true);

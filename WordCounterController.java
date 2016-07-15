@@ -16,10 +16,16 @@ public class WordCounterController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-	String input = gui.input.getText();	
-	zieph(input);
-
+	String command = e.getActionCommand();
+	if (command.equals("Submit")){
+		String input = gui.input.getText();	
+		zieph(input);
+	}
+	else if (command.equals("Clear")){
+		gui.input.setText("");
+		gui.output.setText("");
+	}
+	
 		
 	}
 	
@@ -59,8 +65,9 @@ public class WordCounterController implements ActionListener {
 //		gui.output.setText("The sorted words: " + sortedMap);
 		
 		
-		String a = ("Total words "+count+" \nTotal Unique words "+individualCount+ " Unique word percentage: %"+ uniquePercen *100+ " All the sorted words "+sortedMap);
+		String a = ("Total words: "+count+" \n Total Unique words: "+individualCount+ " \n Unique word percentage: %"+ uniquePercen *100+ " \n All the sorted words: \n"+sortedMap);
 		gui.output.setText(a);
+		gui.output.setCaretPosition(0);
 		
 		//		double ziephIdeal[] = new double [count];
 //		double ziephLiteral[] = new double [count];
