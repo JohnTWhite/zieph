@@ -2,10 +2,12 @@ package WordCount;
 
 import java.awt.event.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class WordCounterController implements ActionListener {
 
 	WordCounterView gui;
+	
 	
 	
 	public WordCounterController(WordCounterView a){
@@ -23,7 +25,11 @@ public class WordCounterController implements ActionListener {
 	}
 	else if (command.equals("Clear")){
 		gui.input.setText("");
-		gui.output.setText("");
+		
+		int count = gui.dtm.getRowCount();
+		for (int i = count -1 ; i >=0 ; i--){
+			gui.dtm.removeRow(i);
+		}
 	}
 	
 		
@@ -63,11 +69,15 @@ public class WordCounterController implements ActionListener {
 
 		
 		
-		String a = ("Total words: "+count+" \n Total Unique words: "+individualCount+ " \n Unique word percentage: %"+ uniquePercen *100+ " \n All the sorted words: \n"+sortedMap);
-		gui.output.setText(a);
-		gui.output.setCaretPosition(0);
+		//String a = ("Total words: "+count+" \n Total Unique words: "+individualCount+ " \n Unique word percentage: %"+ uniquePercen *100+ " \n All the sorted words: \n"+sortedMap);
+		//gui.output.setCaretPosition(0);
 		
-
+		for (Entry<String, Integer> entry : sortedMap.entrySet()){
+			
+		
+		gui.dtm.addRow(new Object[] {entry.getKey(), entry.getValue()});
+		
+		}
 		
 		
 		
@@ -81,7 +91,7 @@ public class WordCounterController implements ActionListener {
 	    }
 	
 	    /*
-	     * compares the values of of the Associative array
+	     * compares the values of of the hashmap table
 	     * to sort them.
 	     * 
 	     */

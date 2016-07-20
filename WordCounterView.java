@@ -1,9 +1,11 @@
 package WordCount;
 
 import java.awt.*;
+
 import java.awt.event.*;
 
 import javax.swing.*;
+import javax.swing.table.*;
 
 
 public class WordCounterView extends JFrame {
@@ -14,8 +16,14 @@ public class WordCounterView extends JFrame {
 	
 	JLabel overView = new JLabel("Type your words to have them counted");
 	
+	
+//	Object[][] tableData = {{"", ""}};
+	
 	JTextArea input = new JTextArea();
-	JTextArea output = new JTextArea();
+	JTable output = new JTable();
+	DefaultTableModel dtm = new DefaultTableModel(new String[] { "Words", "Count"},0);
+	
+	
 	
 	JScrollPane scrollOut;
 	JScrollPane scrollIn;
@@ -34,8 +42,10 @@ public class WordCounterView extends JFrame {
 		submit.addActionListener(controller);
 		clear.addActionListener(controller);
 		
-		output.setEditable(false);
-		output.setLineWrap(true);
+//		output.setEditable(false);
+//		output.setLineWrap(true);
+
+		output.setModel(dtm);
 		
 		scrollOut = new JScrollPane(output);
 		scrollIn = new JScrollPane(input);
