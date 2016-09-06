@@ -208,8 +208,10 @@ public class WordCounterView extends JFrame {
 	}
 	
 	private void setupDatabaseCard() {
-//		
-//		BoxLayout boxLayoutDB = new BoxLayout(databasePanel, BoxLayout.Y_AXIS);
+		
+		
+		//TODO: This is what I am currently developing. 
+	
 //		
 //		JLabel overView = new JLabel("<html>Type your words in this box to have them counted. The ouput is displayed in the box bellow.</html>");		
 //		JScrollPane scrollOut;
