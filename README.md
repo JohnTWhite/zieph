@@ -11,7 +11,7 @@
  
  Or at least that is the claim of Zipf, and every scientist, mathmatician, to look upon his paper. But it is our duty, I feel, to maintain a healthy skeptisim, and to put law's to the test. And that is what this project accomplishes. It test's that mathmatical principle. In [this video]() I demonstrate this program's use. 
  
- I should hope you have some amount of fun exploring this awesome demonstration of an interesting mathmatical principle. 
+ I should hope you have some amount of fun exploring this fun demonstration of an interesting mathmatical principle. 
  
  - [Further Viewing](https://www.youtube.com/watch?v=fCn8zs912OE)
  
