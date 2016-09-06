@@ -13,8 +13,8 @@
  
  I should hope you have some amount of fun exploring this awesome demonstration of an interesting mathmatical principle. 
  
- -[Further Viewing](https://www.youtube.com/watch?v=fCn8zs912OE)
+ - [Further Viewing](https://www.youtube.com/watch?v=fCn8zs912OE)
  
- -[Further Reading](http://www.businessinsider.com/zipfs-law-and-the-most-common-words-in-english-2013-10)
+ - [Further Reading](http://www.businessinsider.com/zipfs-law-and-the-most-common-words-in-english-2013-10)
 
 
