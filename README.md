@@ -3,7 +3,7 @@
 
 
 
- [Zipf's Law](https://en.wikipedia.org/wiki/Zipf%27s_law) is an awesome principle in mathmatics. Zipf observed that we, humans, will use words to an observable degree. And always, the most used word will be the word "the". Zipf's law predicts that each sucsesive word to the word "the" will be used the inverse of it's rank to the word "the", or the most often used word to be more precise. 
+ [Zipf's Law](https://en.wikipedia.org/wiki/Zipf%27s_law) is an awesome principle in mathmatics. Zipf observed that we, humans, will use words to an observable degree. And always, the most used word will be the word "the". Zipf's law predicts that each sucsesive word to the word "the" will be used the inverse of it's rank to the most often used word, which again should alway's be the word "the". 
  
  So if the word "fancy" was the fifth most used word, it would be used 1/5 as much as the word "the". 
  
