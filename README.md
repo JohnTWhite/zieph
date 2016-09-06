@@ -17,9 +17,7 @@
  
  Each word is a row with a value of how often it is used, and how often it was predicted to be used in relation to it's rank and the most used word from the user inputed text. This predicted amount is referred to as the Zipf estimate. 
  
- Once the JTable is populated the user can either graph the information,
- //TODO
- or submit it to the database to be stored as a table named with the title supplied by the user. 
+ Once the JTable is populated the user can either graph the information, or submit it to the database to be stored as a table named with the title supplied by the user. 
  
  - [Further Viewing](https://www.youtube.com/watch?v=fCn8zs912OE)
  
