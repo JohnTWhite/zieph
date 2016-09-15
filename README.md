@@ -19,8 +19,8 @@
  
  Once the JTable is populated the user can either graph the information, or submit it to the database to be stored as a table named with the title supplied by the user. 
  
- - [Further Viewing](https://www.youtube.com/watch?v=fCn8zs912OE)
+ - [Further Viewing on Zipf's Law](https://www.youtube.com/watch?v=fCn8zs912OE)
  
- - [Further Reading](http://www.businessinsider.com/zipfs-law-and-the-most-common-words-in-english-2013-10)
+ - [Further Reading on Zipf's Law](http://www.businessinsider.com/zipfs-law-and-the-most-common-words-in-english-2013-10)
 
 
