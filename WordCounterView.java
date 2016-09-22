@@ -11,7 +11,7 @@ import javax.swing.table.*;
 public class WordCounterView extends JFrame {
 
 	
-//Bring in our controller. Which holds our action listener events.
+//Bring in our controller. Which holds our action listener events and our functions.
 	
 	WordCounterController controller = new WordCounterController(this);
 	
@@ -36,10 +36,11 @@ public class WordCounterView extends JFrame {
 	
 	JPanel stringPanel = new JPanel();
 	
-	//these elements are used in the String Card
+	// TODO: See if these can go into the cards
 	
 		JTextArea input = new JTextArea(20,20);
-		JTable output = new JTable(20,20);
+//		JTable output = new JTable(20,20);
+		JTable dbOutput = new JTable(20,20);
 		JTable fileTableOutput = new JTable(20,20);
 		JButton stringGraph = new JButton("Graph String");
 		JButton fileGraph = new JButton("Graph File");
@@ -85,7 +86,6 @@ public class WordCounterView extends JFrame {
 		cardHolder.add(stringPanel, "String Input");
 		cardHolder.add(filePanel, "File Input");
 		cardHolder.add(databasePanel, "View Database");
-		
 		cardLayout.show(cardHolder, "Menu");
 
 		//This adds our finished panel.
@@ -118,10 +118,18 @@ public class WordCounterView extends JFrame {
 	
 	private void setupStringCard() {
 		
+		
+		JTable output = new JTable(20,20);
+		
+
+		
 		BoxLayout boxLayout = new BoxLayout(stringPanel, BoxLayout.Y_AXIS);
 		
 		JLabel overView = new JLabel("<html>Type your words in this box to have them counted. The ouput is displayed in the box bellow.</html>");		
+		
+		
 		JScrollPane scrollOut;
+		
 		JScrollPane scrollIn;
 		
 		JButton submit = new JButton("Submit");
@@ -178,6 +186,10 @@ public class WordCounterView extends JFrame {
 		JButton menuButton = new JButton("Main Menu");	
 		JButton findFile = new JButton("Find File");
 		JButton clearFileDB = new JButton("Clear File");
+//		JButton fileGraph = new JButton("Graph File");
+		
+		//TODO figure out why this isn't working
+		fileGraph.setEnabled(false);
 		
 		
 		menuButton.addActionListener(controller);
@@ -186,15 +198,12 @@ public class WordCounterView extends JFrame {
 		clearFileDB.addActionListener(controller);
 		fileGraph.addActionListener(controller);
 		
-		//TODO figure out why this isn't working
-		fileGraph.setEnabled(false);
+
 
 		
 		fileTableOutput.setModel(file_dtm);
 		
 		scrollOutput = new JScrollPane(fileTableOutput);
-
-		
 		
 		
 		filePanel.add(fileOutline);
@@ -204,44 +213,57 @@ public class WordCounterView extends JFrame {
 		filePanel.add(clearFileDB);
 		filePanel.add(menuButton);
 		
+
+		
 		
 	}
 	
 	private void setupDatabaseCard() {
 		
+		BoxLayout boxLayout = new BoxLayout(databasePanel, BoxLayout.Y_AXIS);
+		databasePanel.setLayout(boxLayout);
 		
-		//TODO: This is what I am currently developing. 
 	
-//		
-//		JLabel overView = new JLabel("<html>Type your words in this box to have them counted. The ouput is displayed in the box bellow.</html>");		
-//		JScrollPane scrollOut;
-//		JScrollPane scrollIn;
-//		
-//		JButton submit = new JButton("Submit");
-//		JButton clear = new JButton("Clear");
-//		JButton backButton = new JButton("Main Menu");	
-//		
-//		
-//		databasePanel.setLayout(boxLayoutDB);
-//		
-//		submit.addActionListener(controller);
-//		clear.addActionListener(controller);
-//		backButton.addActionListener(controller);
-//		
-//		input.setEditable(true);
-//		input.setLineWrap(true);
-//		
-//		output.setModel(dtm);
-//		
-//		scrollOut = new JScrollPane(output);
-//		scrollIn = new JScrollPane(input);
-//		
-//		databasePanel.add(overView);
-//		databasePanel.add(scrollIn);
-//		databasePanel.add(submit);
-//		databasePanel.add(scrollOut);
-//		databasePanel.add(clear);
-//		databasePanel.add(backButton);
+		
+		JLabel dbOverView = new JLabel("<html>You can access our database system here, "
+				+ "this will hold any sample sets that have been submited. "
+				+ "Sample sets that include your own submitted works! </html>");		
+		
+		//this combobox will hold our table names on the sql db, or the option for all data.
+		
+		String[] comboBoxContent;
+		
+		comboBoxContent = controller.allTitles();
+		
+		JComboBox allTitles = new JComboBox(comboBoxContent);
+		//this scroll pane will hold the JTable that will hold our data that has been requested 
+		//by the user.
+		
+		JScrollPane dbScrollOutput;
+		
+		JTable output = new JTable(20,20);
+
+
+		JButton dbSubmit = new JButton("Submit to database");
+		JButton dbClear = new JButton("Clear table");
+		JButton backButton = new JButton("Main Menu");		
+		
+
+		dbSubmit.addActionListener(controller);
+		dbClear.addActionListener(controller);
+		backButton.addActionListener(controller);
+		
+		
+		output.setModel(dtm);
+		
+		dbScrollOutput = new JScrollPane(output);
+		
+		databasePanel.add(dbOverView);
+		databasePanel.add(allTitles);
+		databasePanel.add(dbSubmit);
+		databasePanel.add(dbScrollOutput);
+		databasePanel.add(dbClear);
+		databasePanel.add(backButton);
 		
 		databaseInput.addActionListener(controller);
 		

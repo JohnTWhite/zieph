@@ -1,6 +1,7 @@
 package WordCount;
 
 import java.awt.event.*;
+import java.sql.*;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -8,13 +9,18 @@ import java.util.TreeMap;
 
 import javax.swing.JFileChooser;
 
-public class WordCounterController implements ActionListener {
+public class WordCounterController implements ActionListener{
 
 	//WordCounter view object as our visual interface. 
+
+	
+	
 	
 	WordCounterView gui;
 	
 	public WordCounterController(WordCounterView a){
+		
+
 		
 		gui = a;
 		
@@ -35,6 +41,7 @@ public class WordCounterController implements ActionListener {
 	else if (command.equals("Clear")){
 		gui.input.setText("");
 		gui.stringGraph.setEnabled(false);
+		gui.fileGraph.setEnabled(false);
 		
 		int count = gui.dtm.getRowCount();
 		for (int i = count -1 ; i >= 0 ; i--){
@@ -52,7 +59,7 @@ public class WordCounterController implements ActionListener {
 	else if (command.equals("Find a file")){
 		
 		gui.cardLayout.show(gui.cardHolder, "File Input");
-		gui.fileGraph.setEnabled(true);
+		
 		
 		
 	}
@@ -82,6 +89,7 @@ public class WordCounterController implements ActionListener {
 		
 		
 		}
+		gui.fileGraph.setEnabled(true);
 	}
 	else if (command.equals("Graph String")){
 		DrawGraph m = new DrawGraph(gui.dtm);
@@ -150,7 +158,7 @@ public class WordCounterController implements ActionListener {
 		
 		gui.file_dtm.addRow(new Object[] {"Total Words", count});
 		gui.file_dtm.addRow(new Object[] {"Unique Words", individualCount});
-		gui.file_dtm.addRow(new Object[] {"Unique Words Percentage", uniquePercen});
+		gui.file_dtm.addRow(new Object[] {"Unique Words Percentage % ", uniquePercen* 100});
 		
 		double runningTotal = 1;
 		int longestWordValue = 0;
@@ -226,7 +234,7 @@ public class WordCounterController implements ActionListener {
 		
 		gui.dtm.addRow(new Object[] {"Total Words", count});
 		gui.dtm.addRow(new Object[] {"Unique Words", individualCount});
-		gui.dtm.addRow(new Object[] {"Unique Words Percentage", uniquePercen});
+		gui.dtm.addRow(new Object[] {"Unique Words Percentage % ", uniquePercen * 100});
 		
 		double runningTotal = 1;
 		int mostUsedWord = 0;
@@ -273,7 +281,91 @@ public class WordCounterController implements ActionListener {
 	        }
 	    }
 	}
+	
+	
+    public static Connection getConnection() throws Exception {
+    	
+    	try{
+    		String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    		//             jdbc:sqlserver://zifp.database.windows.net:1433;database=zifp;user=zifp@zifp;password=WordCount!123!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    		
+    		String url =  "jdbc:sqlserver://zifp.database.windows.net:1433;database=zifp;user=zifp@zifp;password=WordCount!123!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    		System.out.println("Connection strings successful");
+    		Class.forName(driver);
+    		System.out.println("Class Driver successful");
+    		Connection con = DriverManager.getConnection(url);
+    		System.out.println("Connection successful");
+    		
+    		return con;
+    		
+    	}catch(Exception e){
+    		
+    		System.out.println("Did not work: "+e);
+    		
+    	}
+    	
+    	return null;
+    	
+    }
 
+	
+	//this function returns all the table names in our database
+	String[] allTitles(){
+		
+        Statement statement = null;   
+        ResultSet resultSet = null;
+        Connection connection = null;  
+        PreparedStatement prepsInsertProduct = null;
+        System.out.println("Connection resources created");
+        
+        String titleString = "All/";
+                      
+        try {  
+            
+            
+            connection = getConnection();  
+            System.out.println("Connection created");
+            
+            statement = connection.createStatement();
+            System.out.println("Statment created");
+            
+            String getTableNames = "SELECT * FROM information_schema.tables WHERE TABLE_TYPE='BASE TABLE'";
+            
+            resultSet = statement.executeQuery(getTableNames);
+            
+            System.out.println("Table results recieved");
+            
+         
+            while(resultSet.next()){
+
+            	titleString +=  resultSet.getString(3) + "/";
+            	
+            }
+            connection.close();
+            
+            
+     
+         }
+        catch (Exception e) {  
+            System.out.println("Didn't work: " + e);
+            }  
+		
+		
+		String[] returnArray = titleString.split("/");
+		
+		return returnArray;
+	}
+	
+	void getTable(){
+		
+		
+		
+	
+	}
+	
+	void makeTable(){
+		
+	}
 
 	}
 

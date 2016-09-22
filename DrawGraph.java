@@ -17,12 +17,12 @@ import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class DrawGraph extends JPanel {
-   private static int MAX_SCORE;
+   private static int topValue;
    private static final int PREF_W = 800;
    private static final int PREF_H = 650;
    private static final int BORDER_GAP = 30;
-   private static final Color GRAPH_COLOR = Color.green;
-   private static final Color GRAPH_COLOR_ZIPF = Color.red;
+   private static final Color GRAPH_COLOR = Color.red;
+   private static final Color GRAPH_COLOR_ZIPF = Color.green;
    private static final Color GRAPH_POINT_COLOR = new Color(0,0,0,0);
    private static final Stroke GRAPH_STROKE = new BasicStroke(3f);
    private static final int GRAPH_POINT_WIDTH = 2;
@@ -33,7 +33,7 @@ public class DrawGraph extends JPanel {
    public DrawGraph(DefaultTableModel table) {
 	  
 
-	    this.MAX_SCORE = (Integer)table.getValueAt(3, 1);
+	    this.topValue = (Integer)table.getValueAt(3, 1);
 	   
 	   List<Integer> wordsActual= new ArrayList(); 
 	   List<Integer> wordsZipf= new ArrayList(); 
@@ -73,18 +73,18 @@ public class DrawGraph extends JPanel {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
       double xScale = ((double) getWidth() - 2 * BORDER_GAP) / (scores.size() - 1);
-      double yScale = ((double) getHeight() - 2 * BORDER_GAP) / (MAX_SCORE - 1);
+      double yScale = ((double) getHeight() - 2 * BORDER_GAP) / (topValue - 1);
 
       List<Point> graphPoints = new ArrayList<Point>();
       for (int i = 0; i < scores.size(); i++) {
          int x1 = (int) (i * xScale + BORDER_GAP);
-         int y1 = (int) ((MAX_SCORE - scores.get(i)) * yScale + BORDER_GAP);
+         int y1 = (int) ((topValue - scores.get(i)) * yScale + BORDER_GAP);
          graphPoints.add(new Point(x1, y1));
       }
       List<Point> graphPointsZipf = new ArrayList<Point>();
       for (int i = 0; i < scores.size(); i++) {
          int x1 = (int) (i * xScale + BORDER_GAP);
-         int y1 = (int) ((MAX_SCORE - zipfEstimate.get(i)) * yScale + BORDER_GAP);
+         int y1 = (int) ((topValue - zipfEstimate.get(i)) * yScale + BORDER_GAP);
          graphPointsZipf.add(new Point(x1, y1));
       }
 
