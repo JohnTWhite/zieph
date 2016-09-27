@@ -11,9 +11,13 @@ import javax.swing.table.*;
 public class WordCounterView extends JFrame {
 
 	
-//Bring in our controller. Which holds our action listener events and our functions.
+//Bring in our controller. Which holds our action listener events and our functions(not including database functions).
 	
 	WordCounterController controller = new WordCounterController(this);
+	
+//This controller will handle our database functions and SQL queries.
+	
+	DatabaseController DBcontroller;
 	
 //Our JPanel to hold all the different JPanels using CardLayout.
 	
@@ -231,7 +235,7 @@ public class WordCounterView extends JFrame {
 	
 	private void setupDatabaseCard() {
 		
-		DatabaseController DBcontroller = new DatabaseController();
+
 		
 		
 		BoxLayout boxLayout = new BoxLayout(databasePanel, BoxLayout.Y_AXIS);
@@ -241,9 +245,14 @@ public class WordCounterView extends JFrame {
 		
 		JLabel dbOverView = new JLabel("<html>You can access our database system here, "
 				+ "this will hold any sample sets that have been submited. "
-				+ "Sample sets that include your own submitted works! </html>");		
+				+ "Sample sets that include your own submitted works! </html>");	
+		
+		//Intiatlize DBcontroller so we can use it to access drop down menu. 
+		
+		DBcontroller = new DatabaseController();
 		
 		//this combobox will hold our table names on the sql db, or the option for all data.
+
 		
 		String[] comboBoxContent = DBcontroller.allTitles();
 		

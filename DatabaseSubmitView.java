@@ -1,30 +1,30 @@
 package WordCount;
 
-import java.awt.Toolkit;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-import java.awt.event.ActionListener;
+
 
 
 
 
 public class DatabaseSubmitView  extends JFrame{
 
-
-	JTextField title = new JTextField("title");
-	JTextField authorFirst = new JTextField("author's first name");
-	JTextField authorLast = new JTextField("author's last name");
-	String[] fiction = {"pick a type","fiction", "non-fiction"};
+	//Our swing objects to store our info that will submit to our DB.
+	JTextField title = new JTextField("");
+	JTextField authorFirst = new JTextField("");
+	JTextField authorLast = new JTextField("");
+	JLabel titleBlurb = new JLabel("Type in title");
+	JLabel authorBlurb = new JLabel("Type in authors First then Last name");
+	JLabel genereBlurb = new JLabel("Make sure to Select a catagory as well");
+	String[] fiction = {" ","fiction", "non-fiction"};
 	JComboBox fictious = new JComboBox(fiction);
-	String[] genere = {"pick a genere","comedy","drama","historical","romance","science/math"};
+	String[] genere = {" ","comedy","drama","action","historical","romance","biography","STEM topic"};
 	JComboBox generes = new JComboBox(genere);
 	
 	JButton submit = new JButton("Submit Information");
@@ -34,26 +34,52 @@ public class DatabaseSubmitView  extends JFrame{
 		
 		super("Submit to our Database.");
 		
-		DatabaseController DC = new DatabaseController(WCM);
+		DatabaseController DC = new DatabaseController(WCM, this);
 		
 		JPanel panel = new JPanel();
-		setSize(500, 250);
+		setSize(500, 300);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
+		/*
+		 * 
+		 * Add document listeners to disable submit until
+		 * all fields are complete. Call in our class 
+		 * within a class for our document listener, 
+		 * and our size listener. 
+		 *  
+		 */
+		
+		DatabaseController.listenIfCompleted listen = DC.new listenIfCompleted();
+		title.getDocument().addDocumentListener(listen);
+		authorFirst.getDocument().addDocumentListener(listen);
+		authorLast.getDocument().addDocumentListener(listen);
+		DatabaseController.comboListen comboboxListener = DC.new comboListen();
+		fictious.addItemListener(comboboxListener);
+		generes.addItemListener(comboboxListener);
+		
 		//Sets size limit's on user inputs.
-		((AbstractDocument)title.getDocument()).setDocumentFilter(new SizeFilter(50));
-		((AbstractDocument)authorFirst.getDocument()).setDocumentFilter(new SizeFilter(20));
-		((AbstractDocument)authorLast.getDocument()).setDocumentFilter(new SizeFilter(20));
+		
+		DatabaseController.SizeFilter sizeTitle = DC.new SizeFilter(50);
+		((AbstractDocument)title.getDocument()).setDocumentFilter(sizeTitle);
+		DatabaseController.SizeFilter sizeName = DC.new SizeFilter(20);
+		((AbstractDocument)authorFirst.getDocument()).setDocumentFilter(sizeName);
+		((AbstractDocument)authorLast.getDocument()).setDocumentFilter(sizeName);
 		
 		
-		//TODO: if there are problems check this out.
+		submit.setEnabled(false);
 		submit.addActionListener(DC);
+
+		
+		clear.addActionListener(DC);
 		
 		BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
 		panel.setLayout(layout);
+		panel.add(titleBlurb);
 		panel.add(title);
+		panel.add(authorBlurb);
 		panel.add(authorFirst);
 		panel.add(authorLast);
+		panel.add(genereBlurb);
 		panel.add(fictious);
 		panel.add(generes);
 		panel.add(submit);
@@ -64,33 +90,5 @@ public class DatabaseSubmitView  extends JFrame{
 	}
 	
 	
-
-public class SizeFilter extends DocumentFilter {
-
-    private int maxCharacters;
-
-    public SizeFilter(int maxChars) {
-        maxCharacters = maxChars;
-    }
-
-    public void insertString(FilterBypass fb, int offs, String str, javax.swing.text.AttributeSet a)
-                    throws BadLocationException {
-
-        if ((fb.getDocument().getLength() + str.length()) <= maxCharacters) {
-            super.insertString(fb, offs, str, a);
-        } else {
-            Toolkit.getDefaultToolkit().beep();
-        }
-    }
-
-    public void replace(FilterBypass fb, int offs, int length, String str, javax.swing.text.AttributeSet a)
-                    throws BadLocationException {
-
-        if ((fb.getDocument().getLength() + str.length()
-                        - length) <= maxCharacters) {
-            super.replace(fb, offs, length, str, a);
-        } 
-    }
-}
 
 }
