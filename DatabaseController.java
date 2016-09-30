@@ -180,7 +180,7 @@ public class DatabaseController implements ActionListener {
 	    }
 	    
 	}
-
+	//checks if database submit view text fields are completed
 	public class listenIfCompleted implements DocumentListener {
 		
 		
@@ -226,6 +226,7 @@ public class DatabaseController implements ActionListener {
 		}
 		
 	}
+	//checks if database submit view combo boxes are selected
 	public class comboListen implements ItemListener{
 
 		/*
