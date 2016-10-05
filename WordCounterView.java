@@ -11,9 +11,13 @@ import javax.swing.table.*;
 public class WordCounterView extends JFrame {
 
 	
-//Bring in our controller. Which holds our action listener events and our functions.
+//Bring in our controller. Which holds our action listener events and our functions(not including database functions).
 	
 	WordCounterController controller = new WordCounterController(this);
+	
+//This DatabaseAccessObject holds our methods to access the database.
+	
+	DatabaseAccessObject DAO =  new DatabaseAccessObject();
 	
 //Our JPanel to hold all the different JPanels using CardLayout.
 	
@@ -30,19 +34,19 @@ public class WordCounterView extends JFrame {
 		JButton stringInput = new JButton("Type your text");
 		JButton fileInput = new JButton("Find a file");
 		JButton databaseInput = new JButton("Database");
+		//TODO: delete this when done
+		JButton deletethisbutton = new JButton("TRIAL");
 	
 
 //	This panel is for the string input UI elements. 
 	
 	JPanel stringPanel = new JPanel();
 	
-	// TODO: See if these can go into the cards
-	
 		JTextArea input = new JTextArea(20,20);
-//		JTable output = new JTable(20,20);
 		JTable dbOutput = new JTable(20,20);
 		JTable fileTableOutput = new JTable(20,20);
 		JButton stringGraph = new JButton("Graph String");
+		JButton stringDB = new JButton("Commit type to DB");
 		JButton fileGraph = new JButton("Graph File");
 		
 		//These model's will render the output of the count of words generated in the String Card
@@ -56,9 +60,12 @@ public class WordCounterView extends JFrame {
 	
 		JFileChooser fileChooser = new JFileChooser();
 		
+		
 // This panel is for the user to be able to view the database.
 	
 	JPanel databasePanel = new JPanel();
+	JComboBox fields;
+	JComboBox allTitles;
 	
 	
 	public WordCounterView(){
@@ -101,6 +108,7 @@ public class WordCounterView extends JFrame {
 	private void setupMenuCard(){
 		
 		
+		
 		JLabel menuOverview = new JLabel("<html>Decide between loading text directly into our database, "
 				+ "loading a file from your computer, or searching Gutenberg.org to query books to load.</html>");
 		
@@ -112,6 +120,10 @@ public class WordCounterView extends JFrame {
 		menuPanel.add(stringInput);
 		menuPanel.add(fileInput);
 		menuPanel.add(databaseInput);
+		//TODO: delete this when done.
+		deletethisbutton.addActionListener(controller);
+		menuPanel.add(deletethisbutton);
+		
 		
 		
 	}
@@ -144,12 +156,14 @@ public class WordCounterView extends JFrame {
 		clear.addActionListener(controller);
 		backButton.addActionListener(controller);
 		stringGraph.addActionListener(controller);
+		stringDB.addActionListener(controller);
 		stringInput.addActionListener(controller);
 		
 		input.setEditable(true);
 		input.setLineWrap(true);
 		
 		stringGraph.setEnabled(false);
+		stringDB.setEnabled(false);
 		
 		output.setModel(dtm);
 		
@@ -163,6 +177,7 @@ public class WordCounterView extends JFrame {
 		stringPanel.add(submit);
 		stringPanel.add(scrollOut);
 		stringPanel.add(stringGraph);
+		stringPanel.add(stringDB);
 		stringPanel.add(clear);
 		stringPanel.add(backButton);
 		
@@ -220,6 +235,9 @@ public class WordCounterView extends JFrame {
 	
 	private void setupDatabaseCard() {
 		
+
+		
+		
 		BoxLayout boxLayout = new BoxLayout(databasePanel, BoxLayout.Y_AXIS);
 		databasePanel.setLayout(boxLayout);
 		
@@ -227,15 +245,24 @@ public class WordCounterView extends JFrame {
 		
 		JLabel dbOverView = new JLabel("<html>You can access our database system here, "
 				+ "this will hold any sample sets that have been submited. "
-				+ "Sample sets that include your own submitted works! </html>");		
+				+ "Sample sets that include your own submitted works! </html>");	
+		
+		//Intiatlize DBcontroller so we can use it to access drop down menu. 
+		
+		
 		
 		//this combobox will hold our table names on the sql db, or the option for all data.
+
 		
-		String[] comboBoxContent;
+		String[] comboBoxContent = {"","titles","authors","generes","fiction"};
+		fields = new JComboBox(comboBoxContent);
+		WordCounterController.comboListen listener = controller.new comboListen();
+		fields.addItemListener(listener);
+		allTitles = new JComboBox();
 		
-		comboBoxContent = controller.allTitles();
+
 		
-		JComboBox allTitles = new JComboBox(comboBoxContent);
+		
 		//this scroll pane will hold the JTable that will hold our data that has been requested 
 		//by the user.
 		
@@ -244,7 +271,7 @@ public class WordCounterView extends JFrame {
 		JTable output = new JTable(20,20);
 
 
-		JButton dbSubmit = new JButton("Submit to database");
+		JButton dbSubmit = new JButton("retrieve from database");
 		JButton dbClear = new JButton("Clear table");
 		JButton backButton = new JButton("Main Menu");		
 		
@@ -259,6 +286,7 @@ public class WordCounterView extends JFrame {
 		dbScrollOutput = new JScrollPane(output);
 		
 		databasePanel.add(dbOverView);
+		databasePanel.add(fields);
 		databasePanel.add(allTitles);
 		databasePanel.add(dbSubmit);
 		databasePanel.add(dbScrollOutput);
