@@ -34,8 +34,7 @@ public class WordCounterView extends JFrame {
 		JButton stringInput = new JButton("Type your text");
 		JButton fileInput = new JButton("Find a file");
 		JButton databaseInput = new JButton("Database");
-		//TODO: delete this when done
-		JButton deletethisbutton = new JButton("TRIAL");
+
 	
 
 //	This panel is for the string input UI elements. 
@@ -47,12 +46,16 @@ public class WordCounterView extends JFrame {
 		JTable fileTableOutput = new JTable(20,20);
 		JButton stringGraph = new JButton("Graph String");
 		JButton stringDB = new JButton("Commit type to DB");
+		JButton fileDB = new JButton("Commit file to DB");
 		JButton fileGraph = new JButton("Graph File");
+		JButton dbGraph;
+		JButton dbSubmit;
 		
 		//These model's will render the output of the count of words generated in the String Card
 		
 		DefaultTableModel dtm = new DefaultTableModel(new String[] { "Words", "Count", "Zipf estimate"},0);
 		DefaultTableModel file_dtm = new DefaultTableModel(new String[] { "Words", "Count", "Zipf estimate"},0);
+		DefaultTableModel output_dtm = new DefaultTableModel(new String[] { "Words", "Count", "Zipf estimate"},0);
 		
 //	This panel is for the file input UI elements.
 		
@@ -120,9 +123,7 @@ public class WordCounterView extends JFrame {
 		menuPanel.add(stringInput);
 		menuPanel.add(fileInput);
 		menuPanel.add(databaseInput);
-		//TODO: delete this when done.
-		deletethisbutton.addActionListener(controller);
-		menuPanel.add(deletethisbutton);
+		
 		
 		
 		
@@ -203,8 +204,9 @@ public class WordCounterView extends JFrame {
 		JButton clearFileDB = new JButton("Clear File");
 //		JButton fileGraph = new JButton("Graph File");
 		
-		//TODO figure out why this isn't working
+
 		fileGraph.setEnabled(false);
+		fileDB.setEnabled(false);
 		
 		
 		menuButton.addActionListener(controller);
@@ -212,8 +214,9 @@ public class WordCounterView extends JFrame {
 		findFile.addActionListener(controller);
 		clearFileDB.addActionListener(controller);
 		fileGraph.addActionListener(controller);
-		
+		fileDB.addActionListener(controller);
 
+	
 
 		
 		fileTableOutput.setModel(file_dtm);
@@ -225,6 +228,7 @@ public class WordCounterView extends JFrame {
 		filePanel.add(scrollOutput);
 		filePanel.add(findFile);
 		filePanel.add(fileGraph);
+		filePanel.add(fileDB);
 		filePanel.add(clearFileDB);
 		filePanel.add(menuButton);
 		
@@ -247,13 +251,9 @@ public class WordCounterView extends JFrame {
 				+ "this will hold any sample sets that have been submited. "
 				+ "Sample sets that include your own submitted works! </html>");	
 		
-		//Intiatlize DBcontroller so we can use it to access drop down menu. 
-		
-		
-		
+
 		//this combobox will hold our table names on the sql db, or the option for all data.
 
-		
 		String[] comboBoxContent = {"","titles","authors","generes","fiction"};
 		fields = new JComboBox(comboBoxContent);
 		WordCounterController.comboListen listener = controller.new comboListen();
@@ -268,28 +268,32 @@ public class WordCounterView extends JFrame {
 		
 		JScrollPane dbScrollOutput;
 		
-		JTable output = new JTable(20,20);
+		//JTable dbOutput = new JTable(20,20);
+		
+		dbOutput.setModel(output_dtm);
 
 
-		JButton dbSubmit = new JButton("retrieve from database");
+		dbSubmit = new JButton("retrieve from database");
+		dbGraph = new JButton("Graph Results");
 		JButton dbClear = new JButton("Clear table");
 		JButton backButton = new JButton("Main Menu");		
 		
-
+		dbGraph.addActionListener(controller);
 		dbSubmit.addActionListener(controller);
 		dbClear.addActionListener(controller);
 		backButton.addActionListener(controller);
 		
+		dbGraph.setEnabled(false);
+		//output.setModel(dtm);
 		
-		output.setModel(dtm);
-		
-		dbScrollOutput = new JScrollPane(output);
+		dbScrollOutput = new JScrollPane(dbOutput);
 		
 		databasePanel.add(dbOverView);
 		databasePanel.add(fields);
 		databasePanel.add(allTitles);
 		databasePanel.add(dbSubmit);
 		databasePanel.add(dbScrollOutput);
+		databasePanel.add(dbGraph);
 		databasePanel.add(dbClear);
 		databasePanel.add(backButton);
 		
@@ -298,7 +302,4 @@ public class WordCounterView extends JFrame {
 		
 	}
 	
-	public static void main (String[] args){
-		WordCounterView x = new WordCounterView();
-	}
 }

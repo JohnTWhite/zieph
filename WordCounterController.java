@@ -99,6 +99,7 @@ public class WordCounterController implements ActionListener{
 			gui.file_dtm.removeRow(i);
 		}
 		gui.fileGraph.setEnabled(false);
+		gui.fileDB.setEnabled(false);
 	}
 	else if (command.equals("Find File")){
 		
@@ -140,6 +141,7 @@ public class WordCounterController implements ActionListener{
     		}
     		};
 		gui.fileGraph.setEnabled(true);
+		gui.fileDB.setEnabled(true);
 	}
 	else if (command.equals("Graph String")){
 		DrawGraph m = new DrawGraph(gui.dtm);
@@ -147,23 +149,86 @@ public class WordCounterController implements ActionListener{
 	else if (command.equals("Graph File")){
 		DrawGraph m = new DrawGraph(gui.file_dtm);
 	}
+	else if (command.equals("Graph Results")){
+		DrawGraph m = new DrawGraph(gui.output_dtm);
+	}
 	else if (command.equals("Commit type to DB")){
 		DatabaseSubmitView m = new DatabaseSubmitView(zieph(gui.input.getText()));
 	}
+	else if (command.equals("Commit file to DB")){
+		
+		List<String> words = new ArrayList<String>();
+		List<Integer> word_count = new ArrayList<Integer>();
+		List<Integer> zipf_count = new ArrayList<Integer>();
+		
+		int length = gui.file_dtm.getRowCount();
+		//TODO; FIX THIS NONSENSE!!
+		for(int i = 0; i<length;i++){
+			
+			if(i>2){
+			words.add(gui.file_dtm.getValueAt(i, 0).toString());
+			word_count.add(Integer.parseInt(gui.file_dtm.getValueAt(i, 1).toString()));
+			zipf_count.add(Integer.parseInt(gui.file_dtm.getValueAt(i, 2).toString()));
+			
+		}}
+			System.out.println(word_count.get(0));
+		
+		WordCounterModel model = new WordCounterModel(words,word_count,zipf_count);
+		
+		DatabaseSubmitView fileSubmitView = new DatabaseSubmitView(model);
+	}
 	else if (command.equals("retrieve from database")){
+		
+		//clear table before we set it. 
+		int countClear = gui.output_dtm.getRowCount();
+		for (int i = countClear -1 ; i >= 0 ; i--){
+			gui.output_dtm.removeRow(i);
+		}
+		
+		//our dao used to retrieve or wcm from db
 		WordCounterModel wcm = DAO.get_books_by(gui.fields.getSelectedItem().toString(), gui.allTitles.getSelectedItem().toString());
+		int length = wcm.getLength();
+		List<String> words = wcm.getWords();
+		System.out.println(words.get(0).toString());
+		List<Integer> word_count = wcm.getWord_count();
+		List<Integer> zipf_word_count = wcm.getZipf_word_count();
+		
+		//Count will be the total amount of words used in a book
+		int count = 0;
+		
+		for(int i = 0; i < length; i++){
+			
+			count += word_count.get(i);
+			
+			
+		}
+
+		gui.output_dtm.addRow(new Object[] {"Total Words", count});
+		gui.output_dtm.addRow(new Object[] {"Unique Words", length});
+		double uniquePercen = (double) length / count;
+		uniquePercen *= 100;
+		gui.output_dtm.addRow(new Object[] {"Unique Words Percentage ", "%"+uniquePercen});
+		
+		for(int i = 0; i < length; i++){
+			
+			gui.output_dtm.addRow(new Object[] {words.get(i),word_count.get(i), zipf_word_count.get(i) });
+			
+		}
+		gui.dbGraph.setEnabled(true);
+		
+		}
+		else if (command.equals("Clear table")){
+
+			int count = gui.output_dtm.getRowCount();
+			for (int i = count -1 ; i >= 0 ; i--){
+				gui.output_dtm.removeRow(i);
+			}
+			gui.dbGraph.setEnabled(false);
+		
+		
+		
 	}
 	
-	//TODO: delete this when done.
-	else if (command.equals("TRIAL")){
-		
-		WordCounterModel wcm = zieph("this is a test, by and by a test test testy test is what this is for you guys out there");
-		
-		DatabaseSubmitView m = new DatabaseSubmitView(wcm);
-		
-		
-		
-	}
 	}
 
 
@@ -227,6 +292,15 @@ public class WordCounterController implements ActionListener{
 			word = word.replace("!", "");
 			word = word.replace("?", "");
 			word = word.replace(",", "");
+			word = word.replace("'", "");
+			word = word.replace(")", "");
+			word = word.replace("--", "");
+			word = word.replace("(", "");
+			word = word.replace("\"", "");
+			word = word.replace("\\", "");
+			if (word.length() > 25){
+				word = "";
+			}
 			if(hashMap.containsKey(word))
 			{
 				hashMap.put(word, hashMap.get(word)+1);
@@ -246,6 +320,11 @@ public class WordCounterController implements ActionListener{
 		hashMap.remove(".");
 		hashMap.remove("?");
 		hashMap.remove(",");
+		hashMap.remove("'");
+		hashMap.remove("\"");
+		hashMap.remove(")");
+		hashMap.remove("(");
+		hashMap.remove("--");
 		
 		double uniquePercen = (double)individualCount / (double)count;
 		ValueComparator bvc = new ValueComparator(hashMap);
