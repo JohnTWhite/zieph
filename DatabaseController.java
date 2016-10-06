@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
@@ -56,8 +59,13 @@ public class DatabaseController implements ActionListener {
 		
 		
 		DAO = new DatabaseAccessObject();
-		
-		DAO.submit_book(WCM, DBM);
+		if(!DAO.check_title_already(gui.title.getText())){
+		DAO.submit_book(WCM, DBM);}else{
+			JFrame frame = new JFrame("Oops");
+			JOptionPane.showMessageDialog(frame,
+				    "Already a book in the database.","Title exists",JOptionPane.WARNING_MESSAGE);
+		}
+		gui.dispose();
 	
 	} else if(command.equals("Clear Information")){
 		
